@@ -38,9 +38,7 @@ def create_qr(data):
     qr.print_ascii(out=output_buffer)
 
     output_buffer.seek(0)
-    qr_ascii = output_buffer.read().strip()
-
-    return qr_ascii
+    return output_buffer.read().strip()
 
 def combine_ascii(left_ascii, right_ascii, spacing=0):
     left_lines = left_ascii.split('\n')

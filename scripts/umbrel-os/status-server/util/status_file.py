@@ -17,10 +17,7 @@ def create_empty(status_file_path):
 
 # Returns the index of the dict with a matching ID from a list
 def _get_index(list, id):
-    for i, dict in enumerate(list):
-        if dict['id'] == id:
-            return i
-    return None
+    return next((i for i, dict in enumerate(list) if dict['id'] == id), None)
 
 # Parses a status file
 def parse(status_file_path):
@@ -38,9 +35,8 @@ def parse(status_file_path):
         # Check if we already have an entry for this id
         index = _get_index(statuses, parsed_entry['id'])
         # If we don't, append the entry
-        if index == None:
+        if index is None:
             statuses.append(parsed_entry)
-        # If we do, update the entry
         else:
             statuses[index] = parsed_entry
     return statuses
@@ -48,7 +44,4 @@ def parse(status_file_path):
 # Checks if a status file contains errors
 def contains_errors(status_file_path):
     status = parse(status_file_path)
-    for entry in status:
-        if entry['status'] == 'errored':
-            return True
-    return False
+    return any(entry['status'] == 'errored' for entry in status)
